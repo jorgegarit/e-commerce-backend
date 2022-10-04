@@ -83,7 +83,23 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // delete on tag by its `id` value
+  // duser can delete a tag by its specific id 
+  Tag.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbTagData => {
+    if(!dbTagData) {
+      res.status(404).json({ message: 'Cannot delete. No tag was found using that ID' });
+      return;
+    }
+    res.json(dbTagData);
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json(error);
+  });   
 });
 
 module.exports = router;
