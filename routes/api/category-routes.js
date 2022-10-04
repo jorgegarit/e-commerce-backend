@@ -46,7 +46,7 @@ router.get('/:id', (req, res) => {
   })
   .then(dbCategoryData => {
     if(!dbCategoryData) {
-      res.status(404).json({ message: 'No catergories were found using that ID' });
+      res.status(404).json({ message: 'No catergory was found using that ID' });
       return;
     }
     res.json(dbCategoryData);
@@ -70,7 +70,24 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+  // user can update a category using its id 
+  Category.update(req.body, {
+    // defines that update will be based on specific id 
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbCategoryData => {
+    if(!dbCategoryData) {
+      res.status(404).json({ message: 'Cannot update. No category was found using that ID' });
+      return;
+    }
+    res.json(dbCategoryData);
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json(error);
+  }); 
 });
 
 router.delete('/:id', (req, res) => {
