@@ -5,7 +5,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products
 router.get('/', (req, res) => {
-  // user can serach for all available products 
+  // user can search for all available products 
   Product.findAll({
     // will include the attributes for the products
     attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
@@ -63,6 +63,7 @@ router.get('/:id', (req, res) => {
 
 // create new product
 router.post('/', (req, res) => {
+  // user can add a new product, example product creation: 
   /* req.body should look like this...
     {
       product_name: "Basketball",
@@ -95,7 +96,7 @@ router.post('/', (req, res) => {
 
 // update product
 router.put('/:id', (req, res) => {
-  // update product data
+  // user can update a product 
   Product.update(req.body, {
     where: {
       id: req.params.id,
