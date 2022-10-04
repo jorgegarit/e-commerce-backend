@@ -63,7 +63,23 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  // update a tag's name by its `id` value
+  // User can update a specific tage using its ID
+  Tag.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbTagData => {
+    if(!dbTagData) {
+      res.status(404).json({ message: 'Cannot update. No tag was found using that ID' });
+      return;
+    }
+    res.json(dbTagData);
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json(error);
+  });   
 });
 
 router.delete('/:id', (req, res) => {
