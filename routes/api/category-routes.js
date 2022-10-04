@@ -91,7 +91,24 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+  // user can delete a category by its specific id 
+  Category.destroy({
+    // will use where to find specific id for user to delete
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbCategoryData => {
+    if(!dbCategoryData) {
+      res.status(404).json({ message: 'Cannot delete. No category was found using that ID' });
+      return;
+    }
+    res.json(dbCategoryData);
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json(error);
+  }); 
 });
 
 module.exports = router;
