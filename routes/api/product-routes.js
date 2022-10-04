@@ -137,7 +137,24 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+  // user can delete a specific product using its id
+  Product.destroy({
+    // will use where for specific id search
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbProductData => {
+    if (!dbProductData) {
+      res.status(404).json({ message: 'Cannot delete. No product was found using that ID' });
+      return;
+    }
+    res.json(dbProductData);
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json(error);
+  });
 });
 
 module.exports = router;
